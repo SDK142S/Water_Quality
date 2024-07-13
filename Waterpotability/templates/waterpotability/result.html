@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction Result</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'waterpotability/styles.css' %}">
+</head>
+<body>
+    <h1>Prediction Result</h1>
+    <p>{{ result }}</p>
+    <a href="{% url 'home' %}">Go back</a>
+</body>
+</html>
