@@ -1,33 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Water Quality Prediction</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'waterpotability/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <h1>Predict Water Potability</h1>
-    <form method="post" action="{% url 'predict' %}">
+    <form id="predictionForm" method="post" action="{% url 'waterpotability:predict' %}">
         {% csrf_token %}
-        <label for="ph">pH:</label>
-        <input type="text" id="ph" name="ph" required><br>
-        <label for="hardness">Hardness:</label>
-        <input type="text" id="hardness" name="hardness" required><br>
-        <label for="solids">Solids:</label>
-        <input type="text" id="solids" name="solids" required><br>
-        <label for="chloramines">Chloramines:</label>
-        <input type="text" id="chloramines" name="chloramines" required><br>
-        <label for="sulfate">Sulfate:</label>
-        <input type="text" id="sulfate" name="sulfate" required><br>
-        <label for="conductivity">Conductivity:</label>
-        <input type="text" id="conductivity" name="conductivity" required><br>
-        <label for="organic_carbon">Organic Carbon:</label>
-        <input type="text" id="organic_carbon" name="organic_carbon" required><br>
-        <label for="trihalomethanes">Trihalomethanes:</label>
-        <input type="text" id="trihalomethanes" name="trihalomethanes" required><br>
-        <label for="turbidity">Turbidity:</label>
-        <input type="text" id="turbidity" name="turbidity" required><br>
-        <button type="submit">Predict</button>
+        <div class="attribute-grid">
+            <!-- Row 1 -->
+            <div class="attribute-box">
+                <img src="{% static 'images/ph.jpg' %}" alt="pH Image">
+                <h2>pH</h2>
+                <p>pH of water.</p>
+                <input type="number" step="0.01" placeholder="Enter pH value (0.00 - 14.00)" id="id_ph" name="ph">
+                <div class="error" id="ph-error"></div>
+            </div>
+
+            <div class="attribute-box">
+                <img src="{% static 'images/Hardness.jpeg' %}" alt="Hardness Image">
+                <h2>Hardness</h2>
+                <p>Capacity of water to precipitate soap in mg/L.</p>
+                <input type="number" step="0.01" placeholder="Enter Hardness value (47.43 - 323.12)" id="id_hardness" name="hardness">
+                <div class="error" id="hardness-error"></div>
+            </div>
+
+            <div class="attribute-box">
+                <img src="{% static 'images/Solids.jpeg' %}" alt="Solids Image">
+                <h2>Solids</h2>
+                <p>Total dissolved solids in ppm.</p>
+                <input type="number" step="0.01" placeholder="Enter Solids value (320.94 - 61227.20)" id="id_solids" name="solids">
+                <div class="error" id="solids-error"></div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="attribute-box">
+                <img src="{% static 'images/Chloramines.jpg' %}" alt="Chloramines Image">
+                <h2>Chloramines</h2>
+                <p>Amount of Chloramines in ppm.</p>
+                <input type="number" step="0.01" placeholder="Enter Chloramines value (0.35 - 13.13)" id="id_chloramines" name="chloramines">
+                <div class="error" id="chloramines-error"></div>
+            </div>
+
+            <div class="attribute-box">
+                <img src="{% static 'images/Sulfate.jpg' %}" alt="Sulfate Image">
+                <h2>Sulfate</h2>
+                <p>Amount of Sulfates dissolved in mg/L.</p>
+                <input type="number" step="0.01" placeholder="Enter Sulfate value (129.00 - 481.03)" id="id_sulfate" name="sulfate">
+                <div class="error" id="sulfate-error"></div>
+            </div>
+
+            <div class="attribute-box">
+                <img src="{% static 'images/Conductivity.jpg' %}" alt="Conductivity Image">
+                <h2>Conductivity</h2>
+                <p>Electrical conductivity of water in μS/cm.</p>
+                <input type="number" step="0.01" placeholder="Enter Conductivity value (181.48 - 753.34)" id="id_conductivity" name="conductivity">
+                <div class="error" id="conductivity-error"></div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="attribute-box">
+                <img src="{% static 'images/Organic_carbon.jpg' %}" alt="Organic Carbon Image">
+                <h2>Organic Carbon</h2>
+                <p>Amount of organic carbon in ppm.</p>
+                <input type="number" step="0.01" placeholder="Enter Organic Carbon value (2.20 - 28.30)" id="id_organic_carbon" name="organic_carbon">
+                <div class="error" id="organic_carbon-error"></div>
+            </div>
+
+            <div class="attribute-box">
+                <img src="{% static 'images/Trihalomethanes.jpg' %}" alt="Trihalomethanes Image">
+                <h2>Trihalomethanes</h2>
+                <p>Amount of Trihalomethanes in μg/L.</p>
+                <input type="number" step="0.01" placeholder="Enter Trihalomethanes value (0.74 - 124.00)" id="id_trihalomethanes" name="trihalomethanes">
+                <div class="error" id="trihalomethanes-error"></div>
+            </div>
+
+            <div class="attribute-box">
+                <img src="{% static 'images/Turbidity.jpeg' %}" alt="Turbidity Image">
+                <h2>Turbidity</h2>
+                <p>Measure of light emitting property of water in NTU (Nephelometric Turbidity Units).</p>
+                <input type="number" step="0.01" placeholder="Enter Turbidity value (1.45 - 6.74)" id="id_turbidity" name="turbidity">
+                <div class="error" id="turbidity-error"></div>
+            </div>
+        </div>
+
+        <!-- Predict Button -->
+        <button type="submit" class="predict-button"><strong>Predict</strong></button>
     </form>
+
+    <script src="{% static 'js/validate.js' %}"></script>
 </body>
 </html>

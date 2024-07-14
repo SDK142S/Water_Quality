@@ -1,9 +1,10 @@
-from django.contrib import admin
 from django.urls import path
-from waterpotability import views
+from . import views
+
+app_name = 'waterpotability'
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.index, name='home'),
+    path('', views.index, name='index'),  # Make sure 'index' is defined here
     path('predict/', views.predict, name='predict'),
+    # Other URL patterns as needed
 ]

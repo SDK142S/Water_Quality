@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .forms import WaterQualityForm
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from imblearn.over_sampling import SMOTE
@@ -12,16 +12,38 @@ X = df.drop('Potability', axis=1)
 y = df['Potability']
 smote = SMOTE(random_state=42)
 X_res, y_res = smote.fit_resample(X, y)
-X_train, X_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.1, random_state=52)
 scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
+X_res = scaler.fit_transform(X_res)
 model = RandomForestClassifier(random_state=42)
-model.fit(X_train, y_train)
+model.fit(X_res, y_res)
 
 def index(request):
-    return render(request, 'waterpotability/index.html')
+    if request.method == 'POST':
+        form = WaterQualityForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            features = [
+                data['ph'],
+                data['hardness'],
+                data['solids'],
+                data['chloramines'],
+                data['sulfate'],
+                data['conductivity'],
+                data['organic_carbon'],
+                data['trihalomethanes'],
+                data['turbidity']
+            ]
+            features = scaler.transform([features])
+            prediction = model.predict(features)[0]
+            result = "Potable" if prediction == 1 else "Not Potable"
+            return render(request, 'waterpotability/result.html', {'result': result})
+        else:
+            return render(request, 'waterpotability/index.html', {'form': form})
+    else:
+        form = WaterQualityForm()
+        return render(request, 'waterpotability/index.html', {'form': form})
 
+# Add the predict view function here
 def predict(request):
     if request.method == 'POST':
         features = [
@@ -37,6 +59,6 @@ def predict(request):
         ]
         features = scaler.transform([features])
         prediction = model.predict(features)[0]
-        result = "Potable" if prediction == 1 else "Not Potable"
+        result = "Water is safe to drink" if prediction == 1 else "Water is not safe to drink"
         return render(request, 'waterpotability/result.html', {'result': result})
     return HttpResponse("Invalid request method.", status=405)

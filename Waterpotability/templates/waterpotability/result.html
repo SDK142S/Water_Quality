@@ -1,13 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prediction Result</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'waterpotability/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/result.css' %}">
 </head>
 <body>
-    <h1>Prediction Result</h1>
-    <p>{{ result }}</p>
-    <a href="{% url 'home' %}">Go back</a>
+    <div class="container">
+        <div class="result-box">
+            <h1>Prediction Result</h1>
+            <p class="result">{{ result }}</p>
+            <a href="{% url 'waterpotability:index' %}" class="back-button">Go back</a>
+        </div>
+    </div>
 </body>
 </html>
